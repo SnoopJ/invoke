@@ -71,6 +71,7 @@ class Task(Generic[T]):
         autoprint: bool = False,
         iterable: Optional[Iterable[str]] = None,
         incrementable: Optional[Iterable[str]] = None,
+        hidden: bool = False,
     ) -> None:
         # Real callable
         self.body = body
@@ -98,6 +99,7 @@ class Task(Generic[T]):
         self.times_called = 0
         # Whether to print return value post-execution
         self.autoprint = autoprint
+        self.hidden = hidden
 
     @property
     def name(self) -> str:

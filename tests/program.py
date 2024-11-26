@@ -497,6 +497,14 @@ this is also not ascii: \xe4\x8c\xa1
             got = BytesIO.getvalue(sys.stderr)
             assert got == expected
 
+        def hidden_tasks_can_be_run(self):
+            expected = "Shh, I'm invocognito\n"
+            expect("-c hidden_tasks hidden-task", out=expected)
+
+        def hidden_tasks_can_be_pre(self):
+            expected = "Shh, I'm invocognito\nI'm loud and proud!\n"
+            expect("-c hidden_tasks visible-depends-on-hidden", out=expected)
+
         class Exit_:
             @patch("invoke.program.sys.exit")
             def defaults_to_exiting_0(self, mock_exit):
@@ -851,6 +859,15 @@ Default task: test
 """
             stdout, _ = run("-c tree --list")
             assert expected == stdout
+
+        def hidden_tasks(self):
+            expected = self._listing(
+                (
+                    "default-visible-task",
+                    "explicit-visible-task",
+                )
+            )
+            expect("-c hidden_tasks --list", out=expected)
 
         class namespace_limiting:
             def argument_limits_display_to_given_namespace(self):
